@@ -1,12 +1,12 @@
 
 import os
 
-def to_head( projectpath ):
-    pathlayers = os.path.join( projectpath, 'layers/' ).replace('\\', '/')
+def to_head(projectpath):
+    pathlayers = os.path.join(projectpath, 'layers/').replace('\\', '/')
     return r"""
 \documentclass[border=8pt, multi, tikz]{standalone} 
 \usepackage{import}
-\subimport{"""+ pathlayers + r"""}{init}
+\subimport{""" + pathlayers + r"""}{init}
 \usetikzlibrary{positioning}
 \usetikzlibrary{3d} %for including external image 
 """
@@ -21,17 +21,13 @@ def to_cor():
 \def\FcReluColor{rgb:blue,5;red,5;white,4}
 \def\SoftmaxColor{rgb:magenta,5;black,7}   
 \def\SumColor{rgb:blue,5;green,15}
+\def\ResBlkColor{rgb:green,5;blue,2.5;white,5}  
+\def\AdainResBlkColor{rgb:cyan,5;blue,5;white,5}
 """
 
 def to_begin():
-    return r"""
-\newcommand{\copymidarrow}{\tikz \draw[-Stealth,line width=0.8mm,draw={rgb:blue,4;red,1;green,1;black,3}] (-0.3,0) -- ++(0.3,0);}
-
-\begin{document}
-\begin{tikzpicture}
-\tikzstyle{connection}=[ultra thick,every node/.style={sloped,allow upside down},draw=\edgecolor,opacity=0.7]
-\tikzstyle{copyconnection}=[ultra thick,every node/.style={sloped,allow upside down},draw={rgb:blue,4;red,1;green,1;black,3},opacity=0.7]
-"""
+    return r"""\begin{document}
+\begin{tikzpicture}"""
 
 # layers definition
 
