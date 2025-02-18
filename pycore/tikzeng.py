@@ -23,6 +23,8 @@ def to_cor():
 \def\SumColor{rgb:blue,5;green,15}
 \def\ResBlkColor{rgb:green,5;blue,2.5;white,5}  
 \def\AdainResBlkColor{rgb:cyan,5;blue,5;white,5}
+\def\ResBlkColor{rgb:blue,3;black,2}
+
 """
 
 def to_begin():
@@ -37,21 +39,22 @@ def to_input( pathfile, to='(-3,0,0)', width=8, height=8, name="temp" ):
 """
 
 # Conv
-def to_Conv( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=40, caption=" " ):
+def to_Conv(name, s_filer, n_filer, offset="(0,0,0)", to="(0,0,0)",
+            width=1, height=40, depth=40, caption=" ", color="\ConvColor"):
     return r"""
-\pic[shift={"""+ offset +"""}] at """+ to +""" 
-    {Box={
-        name=""" + name +""",
-        caption="""+ caption +r""",
-        xlabel={{"""+ str(n_filer) +""", }},
-        zlabel="""+ str(s_filer) +""",
-        fill=\ConvColor,
-        height="""+ str(height) +""",
-        width="""+ str(width) +""",
-        depth="""+ str(depth) +"""
-        }
-    };
+\pic[shift=""" + offset + """] at """ + to + """ 
+    {RightBandedBox={
+        name=""" + name + """,
+        caption=""" + caption + """,
+        xlabel={{""" + str(n_filer) + """, }},
+        zlabel=""" + str(s_filer) + """,
+        fill=""" + color + """,
+        height=""" + str(height) + """,
+        width=""" + str(width) + """,
+        depth=""" + str(depth) + """
+    }};
 """
+
 
 # Conv,Conv,relu
 # Bottleneck
