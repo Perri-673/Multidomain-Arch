@@ -94,7 +94,7 @@ def generate_architecture():
 
 def main():
     arch = generate_architecture()
-    namefile = "test_simple.tex"
+    namefile = "test_simple"
     to_generate(arch, namefile + '.tex')
 
 if __name__ == '__main__':
