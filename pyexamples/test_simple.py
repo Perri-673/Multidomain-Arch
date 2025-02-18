@@ -1,4 +1,7 @@
 import os
+import sys
+sys.path.append('../')
+from pycore.tikzeng import *
 
 def to_head(projectpath):
     pathlayers = os.path.join(projectpath, 'layers/').replace('\\', '/')
