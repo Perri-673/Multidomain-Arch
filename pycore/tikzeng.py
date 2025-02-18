@@ -1,4 +1,3 @@
-
 import os
 
 def to_head( projectpath ):
@@ -43,11 +42,11 @@ def to_input( pathfile, to='(-3,0,0)', width=8, height=8, name="temp" ):
 # Conv
 def to_Conv( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=40, caption=" " ):
     return r"""
-\pic[shift={"""+ offset +"""}] at """+ to +""" 
+\pic[shift={""" + offset + """}] at """ + to + """ 
     {Box={
         name=""" + name +""",
-        caption="""+ caption +r""",
-        xlabel={{"""+ str(n_filer) +""", }},
+        caption=""" + caption +r""",
+        xlabel={{""" + str(n_filer) +""", }},
         zlabel="""+ str(s_filer) +""",
         fill=\ConvColor,
         height="""+ str(height) +""",
@@ -57,13 +56,12 @@ def to_Conv( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", widt
     };
 """
 
-# Conv,Conv,relu
-# Bottleneck
+# Conv,Conv,relu - Bottleneck Layer
 def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(0,0,0)", width=(2,2), height=40, depth=40, caption=" " ):
     return r"""
-\pic[shift={ """+ offset +""" }] at """+ to +""" 
+\pic[shift={ """+ offset +""" }] at """ + to + """ 
     {RightBandedBox={
-        name="""+ name +""",
+        name=""" + name +""",
         caption="""+ caption +""",
         xlabel={{ """+ str(n_filer[0]) +""", """+ str(n_filer[1]) +""" }},
         zlabel="""+ str(s_filer) +""",
@@ -76,122 +74,49 @@ def to_ConvConvRelu( name, s_filer=256, n_filer=(64,64), offset="(0,0,0)", to="(
     };
 """
 
-
+# Activation Layer (ReLU) to separate Conv layers
+def to_Activation( name, offset="(0,0,0)", to="(0,0,0)", caption="ReLU" ):
+    return r"""
+\pic[shift={""" + offset + """}] at """ + to + """ 
+    {Box={
+        name=""" + name +""",
+        caption=""" + caption +r""",
+        fill=\ConvReluColor,
+        height=20,
+        width=1,
+        depth=1
+        }
+    };
+"""
 
 # Pool
-def to_Pool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32, opacity=0.5, caption=" "):
+def to_Pool(name, offset="(0,0,0)", to="(0,0,0)", height=40, depth=40, width=1):
     return r"""
-\pic[shift={ """+ offset +""" }] at """+ to +""" 
+\pic[shift={""" + offset + """}] at """ + to + """ 
     {Box={
-        name="""+name+""",
-        caption="""+ caption +r""",
+        name=""" + name +""",
+        caption="POOL",
         fill=\PoolColor,
-        opacity="""+ str(opacity) +""",
-        height="""+ str(height) +""",
-        width="""+ str(width) +""",
-        depth="""+ str(depth) +"""
+        height=""" + str(height) + """,
+        width=""" + str(width) + """,
+        depth=""" + str(depth) + """
         }
     };
 """
 
-# unpool4, 
-def to_UnPool(name, offset="(0,0,0)", to="(0,0,0)", width=1, height=32, depth=32, opacity=0.5, caption=" "):
+# Self-Attention Block
+def to_SelfAttention(name, offset="(0,0,0)", to="(0,0,0)", width=2, height=2, depth=2):
     return r"""
-\pic[shift={ """+ offset +""" }] at """+ to +""" 
-    {Box={
-        name="""+ name +r""",
-        caption="""+ caption +r""",
-        fill=\UnpoolColor,
-        opacity="""+ str(opacity) +""",
-        height="""+ str(height) +""",
-        width="""+ str(width) +""",
-        depth="""+ str(depth) +"""
-        }
-    };
-"""
-
-
-
-def to_ConvRes( name, s_filer=256, n_filer=64, offset="(0,0,0)", to="(0,0,0)", width=6, height=40, depth=40, opacity=0.2, caption=" " ):
-    return r"""
-\pic[shift={ """+ offset +""" }] at """+ to +""" 
-    {RightBandedBox={
-        name="""+ name + """,
-        caption="""+ caption + """,
-        xlabel={{ """+ str(n_filer) + """, }},
-        zlabel="""+ str(s_filer) +r""",
-        fill={rgb:white,1;black,3},
-        bandfill={rgb:white,1;black,2},
-        opacity="""+ str(opacity) +""",
-        height="""+ str(height) +""",
-        width="""+ str(width) +""",
-        depth="""+ str(depth) +"""
-        }
-    };
-"""
-
-
-# ConvSoftMax
-def to_ConvSoftMax( name, s_filer=40, offset="(0,0,0)", to="(0,0,0)", width=1, height=40, depth=40, caption=" " ):
-    return r"""
-\pic[shift={"""+ offset +"""}] at """+ to +""" 
+\pic[shift={""" + offset + """}] at """ + to + """ 
     {Box={
         name=""" + name +""",
-        caption="""+ caption +""",
-        zlabel="""+ str(s_filer) +""",
-        fill=\SoftmaxColor,
-        height="""+ str(height) +""",
-        width="""+ str(width) +""",
-        depth="""+ str(depth) +"""
+        caption="Self-Attention",
+        fill={rgb:blue,3;green,3;red,1},
+        height=""" + str(height) + """,
+        width=""" + str(width) + """,
+        depth=""" + str(depth) + """
         }
     };
-"""
-
-# SoftMax
-def to_SoftMax( name, s_filer=10, offset="(0,0,0)", to="(0,0,0)", width=1.5, height=3, depth=25, opacity=0.8, caption=" " ):
-    return r"""
-\pic[shift={"""+ offset +"""}] at """+ to +""" 
-    {Box={
-        name=""" + name +""",
-        caption="""+ caption +""",
-        xlabel={{" ","dummy"}},
-        zlabel="""+ str(s_filer) +""",
-        fill=\SoftmaxColor,
-        opacity="""+ str(opacity) +""",
-        height="""+ str(height) +""",
-        width="""+ str(width) +""",
-        depth="""+ str(depth) +"""
-        }
-    };
-"""
-
-def to_Sum( name, offset="(0,0,0)", to="(0,0,0)", radius=2.5, opacity=0.6):
-    return r"""
-\pic[shift={"""+ offset +"""}] at """+ to +""" 
-    {Ball={
-        name=""" + name +""",
-        fill=\SumColor,
-        opacity="""+ str(opacity) +""",
-        radius="""+ str(radius) +""",
-        logo=$+$
-        }
-    };
-"""
-
-
-def to_connection( of, to):
-    return r"""
-\draw [connection]  ("""+of+"""-east)    -- node {\midarrow} ("""+to+"""-west);
-"""
-
-def to_skip( of, to, pos=1.25):
-    return r"""
-\path ("""+ of +"""-southeast) -- ("""+ of +"""-northeast) coordinate[pos="""+ str(pos) +"""] ("""+ of +"""-top) ;
-\path ("""+ to +"""-south)  -- ("""+ to +"""-north)  coordinate[pos="""+ str(pos) +"""] ("""+ to +"""-top) ;
-\draw [copyconnection]  ("""+of+"""-northeast)  
--- node {\copymidarrow}("""+of+"""-top)
--- node {\copymidarrow}("""+to+"""-top)
--- node {\copymidarrow} ("""+to+"""-north);
 """
 
 def to_end():
@@ -200,12 +125,39 @@ def to_end():
 \end{document}
 """
 
+# Architecture Code
+def generate_architecture():
+    arch = [
+        to_head( '..' ),
+        to_cor(),
+        to_begin(),
+        to_Conv("from_rgb", 3, 64, offset="(0,0,0)", to="(0,0,0)", height=64, depth=64, width=2 ),
+        to_Activation("activation1", offset="(0,0,0)", to="(from_rgb-east)", caption="ReLU"),
+        
+        to_ConvConvRelu("encode1", s_filer=64, n_filer=(64,128), offset="(1,0,0)", to="(activation1-east)", width=(2,2), height=32, depth=32, caption="Encode Layer 1"),
+        to_Activation("activation2", offset="(0,0,0)", to="(encode1-east)", caption="ReLU"),
+        
+        to_ConvConvRelu("encode2", s_filer=128, n_filer=(128,256), offset="(1,0,0)", to="(activation2-east)", width=(2,2), height=16, depth=16, caption="Encode Layer 2"),
+        to_Activation("activation3", offset="(0,0,0)", to="(encode2-east)", caption="ReLU"),
+        
+        to_ConvConvRelu("encode3", s_filer=256, n_filer=(256,512), offset="(1,0,0)", to="(activation3-east)", width=(2,2), height=8, depth=8, caption="Encode Layer 3"),
+        
+        to_SelfAttention("self_attention", offset="(1.5,0,0)", to="(encode3-east)", width=2, height=2, depth=2),
 
-def to_generate( arch, pathname="file.tex" ):
-    with open(pathname, "w") as f: 
-        for c in arch:
-            print(c)
-            f.write( c )
-     
+        to_ConvConvRelu("decode1", s_filer=512, n_filer=(512,256), offset="(2,0,0)", to="(self_attention-east)", width=(2,2), height=8, depth=8, caption="Decode Layer 1"),
+        to_Activation("activation4", offset="(0,0,0)", to="(decode1-east)", caption="ReLU"),
+        
+        to_ConvConvRelu("decode2", s_filer=256, n_filer=(256,128), offset="(2,0,0)", to="(activation4-east)", width=(2,2), height=16, depth=16, caption="Decode Layer 2"),
+        to_Activation("activation5", offset="(0,0,0)", to="(decode2-east)", caption="ReLU"),
+        
+        to_ConvConvRelu("decode3", s_filer=128, n_filer=(128,64), offset="(2,0,0)", to="(activation5-east)", width=(2,2), height=32, depth=32, caption="Decode Layer 3"),
+        
+        to_Conv("to_rgb", 64, 3, offset="(2,0,0)", to="(decode3-east)", height=64, depth=64, width=2),
+        to_end()
+    ]
 
+    namefile = 'generator_architecture'
+    to_generate(arch, namefile + '.tex' )
 
+if __name__ == '__main__':
+    generate_architecture()
